@@ -29,14 +29,16 @@ export class PassportDatabase implements DataStorageBase {
     this.token = token;
   }
 
-  async createPassport(initialStamps?: Stamp[]): Promise<string> {
+  async createPassport(initialStamps?: Stamp[]): Promise<PassportLoadResponse> {
     if (initialStamps?.length) {
       await this.addStamps(initialStamps);
     } else {
       this.allowEmpty = true;
     }
 
-    return "created";
+    return {
+      status: "Success",
+    };
   }
 
   processPassportResponse = async (request: Promise<any>, requestType: string): Promise<PassportLoadResponse> => {
@@ -96,10 +98,6 @@ export class PassportDatabase implements DataStorageBase {
       }),
       "post"
     );
-  };
-
-  addStamp = async (stamp: Stamp): Promise<void> => {
-    console.log("Not implemented");
   };
 
   deleteStamps = async (providers: PROVIDER_ID[]): Promise<PassportLoadResponse> => {
